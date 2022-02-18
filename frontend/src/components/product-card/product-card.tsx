@@ -1,11 +1,14 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement } from 'react';
 
-import "./product-card.styles.css";
+import './product-card.styles.css';
 
 export interface IProduct {
+  id: string;
   name: string;
+  isDiscontinued: boolean;
+  variants: Array<object>;
   description: string;
-  imageSrc: string;
+  defaultImage: string;
 }
 
 interface IProductCardProps {
@@ -13,14 +16,14 @@ interface IProductCardProps {
 }
 
 const ProductCard: FC<IProductCardProps> = ({ product }): ReactElement => {
-  const { name, imageSrc, description } = product;
+  console.log({ product });
 
   return (
     <div className="product-card-container">
-      <img src={imageSrc} />
+      {/* <img src={imageSrc} /> */}
       <div className="product-card-details">
-        <span className="product-name">{name} </span>
-        <span className="product-description"> {description} </span>
+        {/* <span className="product-name">{name} </span>
+        <span className="product-description"> {description} </span> */}
       </div>
     </div>
   );
