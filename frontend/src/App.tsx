@@ -19,10 +19,12 @@ const App = () => {
     setIsFetching(true);
     fetch('http://localhost:8000/products')
       .then((data) => {
-        if (data.ok) return data.json();
+        if (!data.ok) {
+          setError(new Error(data.statusText));
+          return;
+        }
 
-        setError(new Error(data.statusText));
-        return;
+        return data.json();
       })
       .then(({ products }) => {
         setIsFetching(false);
