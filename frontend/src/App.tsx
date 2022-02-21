@@ -1,36 +1,22 @@
-import { useContext, useEffect, useState } from 'react';
-
-import { CartContext } from './cart-context';
-
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Cart from './components/cart/cart';
 import ProductCard, { IProduct } from './components/product-card/product-card';
 import Navigation from './components/navigation/navigation';
+import { RootState } from './components/store/reducer';
+import { getProducts } from './components/store/actions';
 
 import './App.css';
 
 const App = () => {
-  const { isOpen } = useContext(CartContext);
+  const { isOpen } = useSelector((state: RootState) => state.cartReducer);
+  const { products, error, isFetching } = useSelector((state: RootState) => state.productReducer);
 
-  const [isFetching, setIsFetching] = useState<boolean>();
-  const [products, setProducts] = useState<Array<IProduct>>([]);
-  const [error, setError] = useState<Error>();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsFetching(true);
-    fetch('http://localhost:8000/products')
-      .then((data) => {
-        if (!data.ok) {
-          setError(new Error(data.statusText));
-          return;
-        }
-
-        return data.json();
-      })
-      .then(({ products }) => {
-        setIsFetching(false);
-        setProducts(products);
-      });
-  }, []);
+    dispatch(getProducts('http://localhost:8000/products'));
+  }, [dispatch]);
 
   if (error) {
     return <div>{error}</div>;
@@ -44,7 +30,9 @@ const App = () => {
         {isFetching ? (
           <div>Loading...</div>
         ) : (
-          products?.map((productItem) => <ProductCard key={productItem.id} product={productItem} />)
+          products?.map((productItem: IProduct) => (
+            <ProductCard key={productItem.id} product={productItem} />
+          ))
         )}
       </div>
     </div>

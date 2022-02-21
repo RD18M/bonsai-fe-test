@@ -1,7 +1,11 @@
-import { FC, ReactElement, useState } from 'react';
+import { FC, ReactElement } from 'react';
 import ProductVariant from './product-variant';
 
 import './product-card.styles.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/reducer';
+import { getFilteredProduct, getProducts, setShowVariant } from '../store/actions';
+import { setSelectedVariant } from '../store/actions/productActions';
 
 export interface IProduct {
   id: string;
@@ -24,12 +28,19 @@ interface IProductCardProps {
 }
 
 const ProductCard: FC<IProductCardProps> = ({ product }): ReactElement => {
-  const { defaultImage, description, name, variants } = product;
+  const { defaultImage, description, name, variants, id } = product;
 
-  const [showVariant, setShowVariant] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
-  const onToggleProductVariant = () => {
-    setShowVariant((prev) => !prev);
+  const { showVariant } = useSelector((state: RootState) => state.productReducer);
+
+  const onToggleProductVariant = (open: boolean) => {
+    open
+      ? dispatch(getFilteredProduct(id))
+      : dispatch(getProducts('http://localhost:8000/products'));
+
+    dispatch(setSelectedVariant());
+    dispatch(setShowVariant);
   };
 
   const isNotValidVariant = (variant: any) => {
@@ -42,7 +53,7 @@ const ProductCard: FC<IProductCardProps> = ({ product }): ReactElement => {
 
   return (
     <>
-      <div className="product-card-container" onClick={onToggleProductVariant}>
+      <div className="product-card-container" onClick={() => onToggleProductVariant(true)}>
         <img src={defaultImage} alt="Product Logo" />
         <div className="product-card-details">
           <span className="product-name">{name}</span>
@@ -51,7 +62,11 @@ const ProductCard: FC<IProductCardProps> = ({ product }): ReactElement => {
         {isProductOutOfStock(product) && <div className="product-label">Out of Stock</div>}
       </div>
       {showVariant && (
-        <ProductVariant variants={variants} onClose={onToggleProductVariant} productName={name} />
+        <ProductVariant
+          variants={variants}
+          onClose={() => onToggleProductVariant(false)}
+          productName={name}
+        />
       )}
     </>
   );
