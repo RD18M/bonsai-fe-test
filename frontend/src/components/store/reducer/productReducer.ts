@@ -1,3 +1,4 @@
+import { IVariants } from '../../product-card/models';
 import {
   GET_VARIANT,
   FETCH_PRODUCTS_ERROR,
@@ -9,7 +10,7 @@ import {
 
 interface IInitialState {
   showVariant: boolean;
-  selectedVariant: object;
+  selectedVariant: any | IVariants;
   products: any[];
   error: string;
   isFetching: boolean;
@@ -48,7 +49,7 @@ const productsReducer = (state = initialState, action: { type: string; payload?:
     case FETCH_FILTERED_PRODUCTS:
       return {
         ...state,
-        products: state.products.filter((product: any) => product.id === action.payload),
+        products: state.products.filter((product: IVariants) => product.id === action.payload),
       };
     case FETCH_PRODUCTS_ERROR:
       return { ...state, error: action.payload };

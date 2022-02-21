@@ -1,3 +1,4 @@
+import { IVariants } from '../../product-card/models';
 import {
   ADD_TO_CART_VARIANT,
   IS_OPEN,
@@ -30,7 +31,7 @@ const cartsReducer = (state = initialState, action: { type: string; payload?: an
     case MERGE_VARIANTS_IN_CART:
       return {
         ...state,
-        mergedVariantsInCart: state.variantsInCart.reduce((variants: any, variant: any) => {
+        mergedVariantsInCart: state.variantsInCart.reduce((variants: [], variant: any) => {
           if (!variants[variant.id]) {
             return { ...variants, [variant.id]: [variant] };
           } else {
@@ -43,7 +44,7 @@ const cartsReducer = (state = initialState, action: { type: string; payload?: an
         ...state,
         get variantsInCart() {
           const filteredVariants = (removeItem: boolean) => {
-            const isVariantID = (el: any) =>
+            const isVariantID = (el: IVariants) =>
               removeItem ? el.id === action.payload : el.id !== action.payload;
 
             if (removeItem) {
@@ -61,7 +62,9 @@ const cartsReducer = (state = initialState, action: { type: string; payload?: an
     case REMOVE_ALL_FROM_CART_VARIANT:
       return {
         ...state,
-        variantsInCart: state.variantsInCart.filter((variant) => variant.id !== action.payload),
+        variantsInCart: state.variantsInCart.filter(
+          (variant: IVariants) => variant.id !== action.payload,
+        ),
       };
     default:
       return state;

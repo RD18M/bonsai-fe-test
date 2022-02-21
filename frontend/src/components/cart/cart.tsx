@@ -2,9 +2,11 @@ import { useMemo } from 'react';
 import CartItem from '../cart-item/cart-item';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOpen } from '../store/actions';
+import { RootState } from '../store/reducer';
+import { getStockLimitPerCartItem } from './utils';
+import { IVariants } from '../product-card/models';
 
 import './cart.styles.css';
-import { RootState } from '../store/reducer';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -18,10 +20,7 @@ const Cart = () => {
   const totalPrice = variantsInCart.reduce((total, { priceCents }) => total + priceCents / 100, 0);
 
   const stockLimitPerCartItem = useMemo(() => {
-    return (item: any) =>
-      Object.keys(mergedVariantsInCart).map(
-        (variant) => item.quantity <= mergedVariantsInCart[variant].length,
-      );
+    return (item: IVariants) => getStockLimitPerCartItem(item, mergedVariantsInCart);
   }, [mergedVariantsInCart]);
 
   return (

@@ -1,28 +1,14 @@
 import { FC, ReactElement } from 'react';
 import ProductVariant from './product-variant';
 
-import './product-card.styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/reducer';
 import { getFilteredProduct, getProducts, setShowVariant } from '../store/actions';
 import { setSelectedVariant } from '../store/actions/productActions';
+import { IProduct } from './models';
+import { isProductOutOfStock, isNotValidVariant } from './utils';
 
-export interface IProduct {
-  id: string;
-  name: string;
-  isDiscontinued: boolean;
-  variants: {
-    id: string;
-    image: string;
-    isDiscontinued: boolean;
-    priceCents: number;
-    quantity: number;
-    selectableOptions: { type: string; value: string }[];
-  }[];
-  description: string;
-  defaultImage: string;
-}
-
+import './product-card.styles.css';
 interface IProductCardProps {
   product: IProduct;
 }
@@ -37,18 +23,10 @@ const ProductCard: FC<IProductCardProps> = ({ product }): ReactElement => {
   const onToggleProductVariant = (open: boolean) => {
     open
       ? dispatch(getFilteredProduct(id))
-      : dispatch(getProducts('http://localhost:8000/products'));
+      : dispatch(getProducts(process.env.REACT_APP_PRODUCTS_API as string));
 
     dispatch(setSelectedVariant());
     dispatch(setShowVariant);
-  };
-
-  const isNotValidVariant = (variant: any) => {
-    return variant.quanty <= 0 && variant.isDiscontinued;
-  };
-
-  const isProductOutOfStock = (product: IProduct) => {
-    return product.isDiscontinued && product.variants.every(isNotValidVariant);
   };
 
   return (
@@ -59,12 +37,16 @@ const ProductCard: FC<IProductCardProps> = ({ product }): ReactElement => {
           <span className="product-name">{name}</span>
           <span className="product-description">{description}</span>
         </div>
-        {isProductOutOfStock(product) && <div className="product-label">Out of Stock</div>}
+        {isProductOutOfStock(product, isNotValidVariant) && (
+          <div className="product-label">Out of Stock</div>
+        )}
       </div>
       {showVariant && (
         <ProductVariant
           variants={variants}
           onClose={() => onToggleProductVariant(false)}
+          isProductOutOfStock={isProductOutOfStock}
+          product={product}
           productName={name}
         />
       )}

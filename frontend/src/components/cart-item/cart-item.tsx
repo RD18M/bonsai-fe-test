@@ -8,16 +8,9 @@ import {
 } from '../store/actions';
 import { setSelectedVariant } from '../store/actions/productActions';
 import { RootState } from '../store/reducer';
+import { ICartItem } from './models';
 
 import './cart-item.styles.css';
-
-export interface ICartItem {
-  name: string;
-  image: string;
-  priceCents: number;
-  id: string;
-}
-
 interface ICartItemProps {
   cartItem: ICartItem;
   count: number;

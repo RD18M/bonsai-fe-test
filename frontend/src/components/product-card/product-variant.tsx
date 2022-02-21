@@ -3,19 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCartVariant, mergeVariantsInCart } from '../store/actions';
 import { setSelectedVariant } from '../store/actions/productActions';
 import { RootState } from '../store/reducer';
+import { IProduct, ISelectableOptions, IVariants } from './models';
 
 import './product-variant.styles.css';
+import { isNotValidVariant } from './utils';
 
 interface IProductVariantProps {
   productName: string;
-  variants: {
-    id: string;
-    image: string;
-    isDiscontinued: boolean;
-    priceCents: number;
-    quantity: number;
-    selectableOptions: { type: string; value: string }[];
-  }[];
+  variants: IVariants[];
+  isProductOutOfStock: (product: IProduct, fn: any) => boolean;
+  product: IProduct;
   onClose: () => void;
 }
 
@@ -23,6 +20,8 @@ const ProductVariant: FC<IProductVariantProps> = ({
   variants,
   onClose,
   productName,
+  isProductOutOfStock,
+  product,
 }): ReactElement => {
   const dispatch = useDispatch();
 
@@ -44,7 +43,7 @@ const ProductVariant: FC<IProductVariantProps> = ({
         <button onClick={onClose}>×</button>
         <div className="product-variant-parent-product-name">{productName}</div>
         <div className="product-variant-price">
-          ${selectedVariant.priceCents / 100} (QTY.{' '}
+          ${selectedVariant.priceCents / 100} (Qty.{' '}
           {selectedVariant.quantity - (mergedVariantsInCart[selectedVariant.id]?.length ?? 0)})
         </div>
         <div className="product-variant-card-image-container">
@@ -69,7 +68,7 @@ const ProductVariant: FC<IProductVariantProps> = ({
         </div>
         <div className="product-variant-selectable-options-container">
           <div className="product-variant-selectable-options-title">OPTIONS:</div>
-          {selectedVariant.selectableOptions.map((option: any, idx: number) => {
+          {selectedVariant?.selectableOptions.map((option: ISelectableOptions, idx: number) => {
             return (
               <div key={idx} className="product-variant-selectable-options-list">
                 <div>{option.type}</div>
@@ -84,7 +83,10 @@ const ProductVariant: FC<IProductVariantProps> = ({
           className="product-variant-card-selected-image"
         />
         <div className="product-variant-add-to-card-button">
-          <button onClick={onAddToCart} disabled={stockLimit}>
+          <button
+            onClick={onAddToCart}
+            disabled={stockLimit || isProductOutOfStock(product, isNotValidVariant)}
+          >
             Add To Cart
           </button>
         </div>
