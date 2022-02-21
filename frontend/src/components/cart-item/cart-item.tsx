@@ -5,9 +5,9 @@ import {
   mergeVariantsInCart,
   removeAllFromCartVariant,
   removeFromCartVariant,
-} from '../store/actions';
-import { setSelectedVariant } from '../store/actions/productActions';
-import { RootState } from '../store/reducer';
+} from '../../store/actions';
+import { setSelectedVariant } from '../../store/actions/productActions';
+import { RootState } from '../../store/reducer';
 import { ICartItem } from './models';
 
 import './cart-item.styles.css';

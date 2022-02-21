@@ -2,9 +2,9 @@ import { FC, ReactElement } from 'react';
 import ProductVariant from './product-variant';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store/reducer';
-import { getFilteredProduct, getProducts, setShowVariant } from '../store/actions';
-import { setSelectedVariant } from '../store/actions/productActions';
+import { RootState } from '../../store/reducer';
+import { getFilteredProduct, getProducts, setShowVariant } from '../../store/actions';
+import { setSelectedVariant } from '../../store/actions/productActions';
 import { IProduct } from './models';
 import { isProductOutOfStock, isNotValidVariant } from './utils';
 

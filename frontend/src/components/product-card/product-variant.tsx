@@ -1,8 +1,8 @@
 import { FC, Fragment, memo, ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCartVariant, mergeVariantsInCart } from '../store/actions';
-import { setSelectedVariant } from '../store/actions/productActions';
-import { RootState } from '../store/reducer';
+import { addToCartVariant, mergeVariantsInCart } from '../../store/actions';
+import { setSelectedVariant } from '../../store/actions/productActions';
+import { RootState } from '../../store/reducer';
 import { IProduct, ISelectableOptions, IVariants } from './models';
 
 import './product-variant.styles.css';

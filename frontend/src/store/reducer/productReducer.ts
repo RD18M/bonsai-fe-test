@@ -1,4 +1,4 @@
-import { IVariants } from '../../product-card/models';
+import { IVariants } from '../../components/product-card/models';
 import {
   GET_VARIANT,
   FETCH_PRODUCTS_ERROR,

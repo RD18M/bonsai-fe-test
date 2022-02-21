@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import CartItem from '../cart-item/cart-item';
 import { useDispatch, useSelector } from 'react-redux';
-import { setOpen } from '../store/actions';
-import { RootState } from '../store/reducer';
+import { setOpen } from '../../store/actions';
+import { RootState } from '../../store/reducer';
 import { getStockLimitPerCartItem } from './utils';
 import { IVariants } from '../product-card/models';
 

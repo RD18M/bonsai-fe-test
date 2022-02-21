@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setOpen } from '../store/actions/cartActions';
-import { RootState } from '../store/reducer';
+import { setOpen } from '../../store/actions/cartActions';
+import { RootState } from '../../store/reducer';
 import './navigation.styles.css';
 
 const Navigation = () => {

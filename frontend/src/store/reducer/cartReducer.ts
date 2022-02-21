@@ -1,4 +1,4 @@
-import { IVariants } from '../../product-card/models';
+import { IVariants } from '../../components/product-card/models';
 import {
   ADD_TO_CART_VARIANT,
   IS_OPEN,
