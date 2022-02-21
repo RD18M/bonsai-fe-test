@@ -43,3 +43,5 @@ REACT_APP_PRODUCTS_API=
 
 3. #### Finally, click on the `+` or `-` button to add or remove an item to/from the cart.
 ![gif](3.gif)
+
+#### *P.S. Not designed to be mobile friendly.*
